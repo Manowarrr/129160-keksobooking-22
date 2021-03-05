@@ -66,7 +66,5 @@ const createAdvertisement = () => {
   };
 };
 
-const similarAdvertisements = new Array(SIMILAR_ADVERTISEMENT_COUNT).fill(null).map(() => createAdvertisement());
-
-alert(similarAdvertisements);
+export { createAdvertisement, SIMILAR_ADVERTISEMENT_COUNT };
 
