@@ -1,8 +1,20 @@
 const PLACESTYPES = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalow: 'Бунгало',
+  palace: {
+    type: 'Дворец',
+    minPrice: '10000',
+  },
+  flat: {
+    type: 'Квартира',
+    minPrice: '1000',
+  },
+  house: {
+    type: 'Дом',
+    minPrice: '5000',
+  },
+  bungalow: {
+    type: 'Бунгало',
+    minPrice: '0',
+  },
 }
 
 const makeSimilarElementsFromArray = (arr, element) => {
@@ -34,7 +46,7 @@ const createAdvertisementCard = (adv) => {
   advElement.querySelector('.popup__title').textContent = adv.offer.title;
   advElement.querySelector('.popup__text--address').textContent = adv.offer.address;
   advElement.querySelector('.popup__text--price').innerHTML = `${adv.offer.price} <span>₽/ночь</span>`;
-  advElement.querySelector('.popup__type').textContent = PLACESTYPES[adv.offer.type];
+  advElement.querySelector('.popup__type').textContent = PLACESTYPES[adv.offer.type].type;
   advElement.querySelector('.popup__text--capacity').textContent = `${adv.offer.rooms} комнаты  для ${adv.offer.guests} гостей`;
   advElement.querySelector('.popup__text--time').textContent = `Заезд после ${adv.offer.checkin}, выезд до ${adv.offer.checkout}`;
   advElement.querySelector('.popup__avatar').src = adv.author.avatar;
@@ -67,4 +79,4 @@ const createAdvertisementCard = (adv) => {
   return advElement;
 }
 
-export { createAdvertisementCard };
+export { createAdvertisementCard, PLACESTYPES };
