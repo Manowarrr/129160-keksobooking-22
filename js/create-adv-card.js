@@ -15,7 +15,7 @@ const PLACESTYPES = {
     type: 'Бунгало',
     minPrice: '0',
   },
-}
+};
 
 const makeSimilarElementsFromArray = (arr, element) => {
 
@@ -36,7 +36,7 @@ const makeSimilarElementsFromArray = (arr, element) => {
   });
 
   return listFragment;
-}
+};
 
 const createAdvertisementCard = (adv) => {
 
@@ -77,6 +77,6 @@ const createAdvertisementCard = (adv) => {
   }
 
   return advElement;
-}
+};
 
 export { createAdvertisementCard, PLACESTYPES };

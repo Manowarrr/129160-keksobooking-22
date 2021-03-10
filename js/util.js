@@ -6,7 +6,7 @@ const randomInteger = (min, max) => {
   }
 
   return Math.round(min - 0.5 + Math.random() * (max - min + 1));
-}
+};
 
 const getRandomArrayElement = (arr) => {
   return arr[randomInteger(0, arr.length - 1)];
@@ -22,6 +22,6 @@ const randomFloat = (min, max, digits) => {
   let rand = min + Math.random() * (max - min);
 
   return +rand.toFixed(digits);
-}
+};
 
 export { randomInteger, getRandomArrayElement, randomFloat };
