@@ -3,31 +3,31 @@ import { randomInteger, getRandomArrayElement, randomFloat } from './util.js';
 const TITLES = [
   'Это заголовок № 1.',
   'Это заголовок № 2.',
-]
+];
 
 const DESCRIPTIONS = [
   'Это описание № 1.',
   'Это описание № 2.',
-]
+];
 
 const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
-]
+];
 
 const TYPES = [
   'palace',
   'flat',
   'house',
   'bungalow',
-]
+];
 
 const TIMES = [
   '12:00',
   '13:00',
   '14:00',
-]
+];
 
 const FEATURES = [
   'wifi',
@@ -36,7 +36,7 @@ const FEATURES = [
   'washer',
   'elevator',
   'conditioner',
-]
+];
 
 const SIMILAR_ADVERTISEMENT_COUNT = 10;
 

@@ -4,9 +4,13 @@ const typeSelect = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
 const timeinSelect = document.querySelector('#timein');
 const timeoutSelect = document.querySelector('#timeout');
-const advForm = document.querySelector('.ad-form');
-const addressInput = advForm.querySelector('#address');
-const mapFilterForm = document.querySelector('.map__filters');
+const advertisementForm = document.querySelector('.ad-form');
+const advertisementFormInputs = advertisementForm.querySelectorAll('.ad-form__element');
+const advertisementFormPhoto = advertisementForm.querySelector('.ad-form-header');
+const addressInput = advertisementForm.querySelector('#address');
+const mapForm = document.querySelector('.map__filters');
+const mapFormInputs = mapForm.querySelectorAll('.map__filter');
+const mapFormFeatures = mapForm.querySelector('.map__features');
 
 const setPriceInputValues = (option) => {
   priceInput.min = PLACESTYPES[option.value].minPrice;
@@ -14,7 +18,7 @@ const setPriceInputValues = (option) => {
 };
 
 Array.from(typeSelect.children).forEach(option => {
-  if(option.selected == true) {
+  if(option.selected) {
     setPriceInputValues(option);
   }
 });
@@ -24,26 +28,39 @@ typeSelect.addEventListener('change', (evt) => {
 });
 
 timeinSelect.addEventListener('change', (evt) => {
-  timeoutSelect.querySelector(`option[value='${evt.target.value}']`).selected = true;
+  timeoutSelect.options.selectedIndex = evt.target.options.selectedIndex;
 });
 
-const setFormState = (formName, isActive, ...formFilters) => {
-  if(isActive) {
-    formName.classList.add('ad-form--disabled');
-  } else {
-    formName.classList.remove('ad-form--disabled');
-  }
-  formFilters.forEach(param => {
-    Array.from(formName.querySelectorAll(param)).forEach(filter => {
-      if(filter.innerText !== 'Адрес (координаты)')
-        filter.disabled = isActive;
-    });
-  })
+const setInactiveFormState = () => {
+  mapForm.classList.add('ad-form--disabled');
+  advertisementForm.classList.add('ad-form--disabled');
+  mapFormInputs.forEach(element => {
+    element.disabled = true;
+  });
+  advertisementFormInputs.forEach(element => {
+    element.disabled = true;
+  });
+  mapFormFeatures.disabled = true;
+  advertisementFormPhoto.disabled = true;
 };
 
-const formateAddressInput = (lat, lng) => {
+const setActiveFormState = () => {
+  mapForm.classList.remove('ad-form--disabled');
+  advertisementForm.classList.remove('ad-form--disabled');
+  mapFormInputs.forEach(element => {
+    element.disabled = false;
+  });
+  advertisementFormInputs.forEach(element => {
+    element.disabled = false;
+  });
+  mapFormFeatures.disabled = false;
+  advertisementFormPhoto.disabled = false;
+};
+
+
+const setAddressInput = (lat, lng) => {
   addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
-export { addressInput, advForm, mapFilterForm, setFormState, formateAddressInput };
+export { setInactiveFormState, setActiveFormState, setAddressInput };
 
