@@ -1,4 +1,4 @@
-import { setInactiveFormState, setActiveFormState } from './form.js';
+import { setInactiveFormState } from './form.js';
 import { initializeMap } from './map.js';
 
 setInactiveFormState();
