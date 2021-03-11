@@ -1,4 +1,4 @@
-import { setActiveFormState, setAddressInput } from './form.js';
+import { setAddressInput, toggleFormState } from './form.js';
 import { createAdvertisementCard } from './create-adv-card.js';
 import { createAdvertisement, SIMILAR_ADVERTISEMENT_COUNT } from './data.js';
 
@@ -34,7 +34,7 @@ const createAdvertisementPins = (map, advertisementsArr) => {
 const initializeMap = () => {
   const map = L.map('map-canvas')
     .on('load', () => {
-      setActiveFormState();
+      toggleFormState('remove', false);
     })
     .setView({
       lat: 35.6895,
