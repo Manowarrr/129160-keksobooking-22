@@ -1,6 +1,7 @@
-import { setInactiveFormState } from './form.js';
+import { toggleFormState } from './form.js';
 import { initializeMap } from './map.js';
 
-setInactiveFormState();
+//setInactiveFormState();
+toggleFormState('add', true);
 initializeMap();
 
