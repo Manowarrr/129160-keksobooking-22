@@ -1,4 +1,6 @@
 import { PLACESTYPES } from './create-adv-card.js';
+import { sendData } from './api.js';
+import { createErrorSendDataMessage, createSuccessSendDataMessage } from './create-message.js';
 
 const typeSelect = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
@@ -67,5 +69,43 @@ const setAddressInput = (lat, lng) => {
   addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
-export { setAddressInput, toggleFormState };
+const setFormInitialState = () => {
+  createSuccessSendDataMessage();
+
+  const inputs = advertisementForm.querySelectorAll('input');
+  inputs.forEach(input => {
+    switch(input.type) {
+      case 'text':
+      case 'number':
+        input.value = '';
+        break;
+      case 'checkbox':
+        input.checked = false;
+    }
+  });
+
+  const selects = advertisementForm.querySelectorAll('select');
+  selects.forEach(select => {
+    select.selectedIndex = 0;
+  });
+
+  const textarea = advertisementForm.querySelector('textarea');
+  textarea.value = '';
+
+  setAddressInput(35.6895, 139.69171);
+};
+
+const setUserFormSubmit = () => {
+  advertisementForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => setFormInitialState(),
+      () => createErrorSendDataMessage(),
+      new FormData(evt.target),
+    );
+  });
+};
+
+export { setAddressInput, toggleFormState, setUserFormSubmit };
 

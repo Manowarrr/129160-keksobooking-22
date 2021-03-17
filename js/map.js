@@ -1,14 +1,13 @@
 import { setAddressInput, toggleFormState } from './form.js';
 import { createAdvertisementCard } from './create-adv-card.js';
-import { createAdvertisement, SIMILAR_ADVERTISEMENT_COUNT } from './data.js';
-
-const advertisements = new Array(SIMILAR_ADVERTISEMENT_COUNT).fill(null).map(() => createAdvertisement());
+import { getData } from './api.js';
+import { createErrorGetDataMessage } from './create-message.js';
 
 /* global L:readonly */
 const createAdvertisementPins = (map, advertisementsArr) => {
   advertisementsArr.forEach(adv => {
-    const lat = adv.location.x;
-    const lng = adv.location.y;
+    const lat = adv.location.lat;
+    const lng = adv.location.lng;
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
@@ -32,14 +31,23 @@ const createAdvertisementPins = (map, advertisementsArr) => {
 };
 
 const initializeMap = () => {
+  const fetchAdvertisements = getData(
+    (advertisements) => {
+      createAdvertisementPins(map, advertisements);
+    },
+    (err) => {
+      createErrorGetDataMessage(err);
+    });
+
   const map = L.map('map-canvas')
     .on('load', () => {
       toggleFormState('remove', false);
+      fetchAdvertisements();
     })
     .setView({
       lat: 35.6895,
       lng: 139.69171,
-    }, 12);
+    }, 10);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -73,8 +81,6 @@ const initializeMap = () => {
     const newAddress = evt.target.getLatLng();
     setAddressInput(newAddress.lat, newAddress.lng);
   });
-
-  createAdvertisementPins(map, advertisements);
 };
 
-export { initializeMap, createAdvertisementPins };
+export { initializeMap };
