@@ -1,12 +1,14 @@
+import { advertisementForm, setAddressInput } from './form.js';
+
 const main = document.querySelector('main');
 
-const createErrorGetDataMessage = (err) => {
+const createErrorGetDataMessage = (text) => {
   const messageTemplate = document.querySelector('#server-response-error').content.querySelector('.error');
   const errorMessage = messageTemplate.cloneNode(true);
   const message = errorMessage.querySelector('.error__message');
   const messageBtn = errorMessage.querySelector('.error__button');
 
-  message.textContent = err;
+  message.textContent = text;
 
   main.appendChild(errorMessage);
 
@@ -23,17 +25,21 @@ const createErrorSendDataMessage = () => {
   main.appendChild(errorMessage);
 
   messageBtn.addEventListener('click', () => {
-
+    main.removeChild(errorMessage);
   })
 };
 
-const createSuccessSendDataMessage = () => {
+const createSuccessSendDataMessage = (form) => {
   const messageTemplate = document.querySelector('#success').content.querySelector('.success');
   const successMessage = messageTemplate.cloneNode(true);
 
   main.appendChild(successMessage);
 
   setTimeout(() => {main.removeChild(successMessage);}, 2000);
+
+  advertisementForm.reset();
+
+  setAddressInput(35.6895, 139.69171);
 };
 
 export { createErrorGetDataMessage, createErrorSendDataMessage, createSuccessSendDataMessage};

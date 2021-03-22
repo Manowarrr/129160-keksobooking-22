@@ -1,10 +1,12 @@
 import { setAddressInput, toggleFormState } from './form.js';
+import { setHouseTypeFilter } from './filter.js';
 import { createAdvertisementCard } from './create-adv-card.js';
 import { getData } from './api.js';
 import { createErrorGetDataMessage } from './create-message.js';
 
 /* global L:readonly */
 const createAdvertisementPins = (map, advertisementsArr) => {
+  console.dir(advertisementsArr);
   advertisementsArr.forEach(adv => {
     const lat = adv.location.lat;
     const lng = adv.location.lng;
@@ -24,10 +26,14 @@ const createAdvertisementPins = (map, advertisementsArr) => {
       },
     );
 
+    adv.marker = marker;
+
     marker
       .addTo(map)
       .bindPopup(createAdvertisementCard(adv));
   });
+
+  setHouseTypeFilter(advertisementsArr, map);
 };
 
 const initializeMap = () => {

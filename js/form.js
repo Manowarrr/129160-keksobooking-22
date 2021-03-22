@@ -12,6 +12,7 @@ const advertisementFormPhoto = advertisementForm.querySelector('.ad-form-header'
 const addressInput = advertisementForm.querySelector('#address');
 const mapForm = document.querySelector('.map__filters');
 const mapFormInputs = mapForm.querySelectorAll('.map__filter');
+const houseTypeFilter = mapForm.querySelector('#housing-type');
 const mapFormFeatures = mapForm.querySelector('.map__features');
 const roomNumberSelect = document.querySelector('#room_number');
 const roomCapasitySelect = document.querySelector('#capacity');
@@ -69,43 +70,17 @@ const setAddressInput = (lat, lng) => {
   addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
-const setFormInitialState = () => {
-  createSuccessSendDataMessage();
-
-  const inputs = advertisementForm.querySelectorAll('input');
-  inputs.forEach(input => {
-    switch(input.type) {
-      case 'text':
-      case 'number':
-        input.value = '';
-        break;
-      case 'checkbox':
-        input.checked = false;
-    }
-  });
-
-  const selects = advertisementForm.querySelectorAll('select');
-  selects.forEach(select => {
-    select.selectedIndex = 0;
-  });
-
-  const textarea = advertisementForm.querySelector('textarea');
-  textarea.value = '';
-
-  setAddressInput(35.6895, 139.69171);
-};
-
 const setUserFormSubmit = () => {
   advertisementForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     sendData(
-      () => setFormInitialState(),
+      () => createSuccessSendDataMessage(),
       () => createErrorSendDataMessage(),
       new FormData(evt.target),
     );
   });
 };
 
-export { setAddressInput, toggleFormState, setUserFormSubmit };
+export { setAddressInput, advertisementForm, houseTypeFilter, toggleFormState, setUserFormSubmit };
 
