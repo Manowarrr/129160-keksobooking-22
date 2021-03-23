@@ -1,13 +1,14 @@
 import { setAddressInput, toggleFormState } from './form.js';
-import { setHouseTypeFilter } from './filter.js';
+import { filterAdvertisements, setMapFormChange } from './filter.js';
 import { createAdvertisementCard } from './create-adv-card.js';
 import { getData } from './api.js';
 import { createErrorGetDataMessage } from './create-message.js';
 
 /* global L:readonly */
-const createAdvertisementPins = (map, advertisementsArr) => {
-  console.dir(advertisementsArr);
-  advertisementsArr.forEach(adv => {
+const createAdvertisementPins = (map, pinsLayer, advertisements) => {
+  pinsLayer.clearLayers();
+
+  filterAdvertisements(advertisements).forEach(adv => {
     const lat = adv.location.lat;
     const lng = adv.location.lng;
     const icon = L.icon({
@@ -26,34 +27,15 @@ const createAdvertisementPins = (map, advertisementsArr) => {
       },
     );
 
-    adv.marker = marker;
-
     marker
-      .addTo(map)
+      .addTo(pinsLayer)
       .bindPopup(createAdvertisementCard(adv));
   });
-
-  setHouseTypeFilter(advertisementsArr, map);
 };
 
 const initializeMap = () => {
-  const fetchAdvertisements = getData(
-    (advertisements) => {
-      createAdvertisementPins(map, advertisements);
-    },
-    (err) => {
-      createErrorGetDataMessage(err);
-    });
 
-  const map = L.map('map-canvas')
-    .on('load', () => {
-      toggleFormState('remove', false);
-      fetchAdvertisements();
-    })
-    .setView({
-      lat: 35.6895,
-      lng: 139.69171,
-    }, 10);
+  const map = L.map('map-canvas');
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -78,7 +60,6 @@ const initializeMap = () => {
       icon: mainPinIcon,
     },
   );
-
   mainPinMarker.addTo(map);
 
   setAddressInput(35.6895, 139.69171);
@@ -87,6 +68,25 @@ const initializeMap = () => {
     const newAddress = evt.target.getLatLng();
     setAddressInput(newAddress.lat, newAddress.lng);
   });
+
+  const pinsLayer = L.layerGroup()
+  pinsLayer.addTo(map);
+
+  map.on('load', () => {
+    toggleFormState('remove', false);
+    getData(
+      (advertisements) => {
+        createAdvertisementPins(map, pinsLayer, advertisements);
+        setMapFormChange(() => createAdvertisementPins(map, pinsLayer, advertisements));
+      },
+      (err) => {
+        createErrorGetDataMessage(err);
+      });
+  })
+    .setView({
+      lat: 35.6895,
+      lng: 139.69171,
+    }, 10);
 };
 
 export { initializeMap };

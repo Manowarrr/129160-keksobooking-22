@@ -12,28 +12,9 @@ const advertisementFormPhoto = advertisementForm.querySelector('.ad-form-header'
 const addressInput = advertisementForm.querySelector('#address');
 const mapForm = document.querySelector('.map__filters');
 const mapFormInputs = mapForm.querySelectorAll('.map__filter');
-const houseTypeFilter = mapForm.querySelector('#housing-type');
 const mapFormFeatures = mapForm.querySelector('.map__features');
 const roomNumberSelect = document.querySelector('#room_number');
 const roomCapasitySelect = document.querySelector('#capacity');
-
-const setPriceInputValues = (option) => {
-  priceInput.min = PLACESTYPES[option.value].minPrice;
-  priceInput.placeholder = PLACESTYPES[option.value].minPrice;
-};
-
-typeSelect.childNodes.forEach(child => {
-  if(child.selected)
-    setPriceInputValues(child);
-})
-
-typeSelect.addEventListener('change', (evt) => {
-  setPriceInputValues(evt.target);
-});
-
-timeinSelect.addEventListener('change', (evt) => {
-  timeoutSelect.options.selectedIndex = evt.target.options.selectedIndex;
-});
 
 const addSelectEventListener = (select) => {
   select.addEventListener('change', () => {
@@ -50,8 +31,19 @@ const addSelectEventListener = (select) => {
   });
 }
 
-addSelectEventListener(roomNumberSelect);
-addSelectEventListener(roomCapasitySelect);
+const setAdvertisementFormChange = () => {
+  typeSelect.addEventListener('change', (evt) => {
+    priceInput.min = PLACESTYPES[evt.target.value].minPrice;
+    priceInput.placeholder = PLACESTYPES[evt.target.value].minPrice;
+  });
+
+  timeinSelect.addEventListener('change', (evt) => {
+    timeoutSelect.options.selectedIndex = evt.target.options.selectedIndex;
+  });
+
+  addSelectEventListener(roomNumberSelect);
+  addSelectEventListener(roomCapasitySelect);
+}
 
 const toggleFormState = (action, toggle) => {
   mapForm.classList[action]('ad-form--disabled');
@@ -75,12 +67,16 @@ const setUserFormSubmit = () => {
     evt.preventDefault();
 
     sendData(
-      () => createSuccessSendDataMessage(),
+      () => {
+        createSuccessSendDataMessage();
+        advertisementForm.reset();
+        setAddressInput(35.6895, 139.69171);
+      },
       () => createErrorSendDataMessage(),
       new FormData(evt.target),
     );
   });
 };
 
-export { setAddressInput, advertisementForm, houseTypeFilter, toggleFormState, setUserFormSubmit };
+export { setAddressInput, toggleFormState, setUserFormSubmit, setAdvertisementFormChange, mapForm };
 

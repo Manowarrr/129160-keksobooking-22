@@ -1,5 +1,5 @@
-const getData = (onSuccess, onError) => () => {
-  return fetch('https://22.javascript.pages.academy/keksobooking/data')
+const getData = (onSuccess, onError) => {
+  fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
         return response.json();

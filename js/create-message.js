@@ -1,5 +1,3 @@
-import { advertisementForm, setAddressInput } from './form.js';
-
 const main = document.querySelector('main');
 
 const createErrorGetDataMessage = (text) => {
@@ -29,17 +27,13 @@ const createErrorSendDataMessage = () => {
   })
 };
 
-const createSuccessSendDataMessage = (form) => {
+const createSuccessSendDataMessage = () => {
   const messageTemplate = document.querySelector('#success').content.querySelector('.success');
   const successMessage = messageTemplate.cloneNode(true);
 
   main.appendChild(successMessage);
 
   setTimeout(() => {main.removeChild(successMessage);}, 2000);
-
-  advertisementForm.reset();
-
-  setAddressInput(35.6895, 139.69171);
 };
 
 export { createErrorGetDataMessage, createErrorSendDataMessage, createSuccessSendDataMessage};
