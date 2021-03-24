@@ -1,7 +1,7 @@
-import { toggleFormState, setUserFormSubmit } from './form.js';
+import { toggleFormState, setUserFormSubmit, setAdvertisementFormChange } from './form.js';
 import { initializeMap } from './map.js';
-//import { createSuccessSendDataMessage } from './create-message.js';
 
+setAdvertisementFormChange();
 toggleFormState('add', true);
 initializeMap();
 setUserFormSubmit();

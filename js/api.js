@@ -1,5 +1,5 @@
-const getData = (onSuccess, onError) => () => {
-  return fetch('https://22.javascript.pages.academy/keksobooking/data')
+const getData = (onSuccess, onError) => {
+  fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -9,12 +9,12 @@ const getData = (onSuccess, onError) => () => {
     .then((json) => {
       onSuccess(json);
     })
-    .catch((err) => {
-      onError(err);
+    .catch((error) => {
+      onError(error);
     });
 };
 
-const sendData = (onSuccess, onFail, body) => {
+const sendData = (onSuccess, onError, body) => {
   fetch(
     'https://22.javascript.pages.academy/keksobooking ',
     {
@@ -26,11 +26,11 @@ const sendData = (onSuccess, onFail, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        onFail();
+        onError();
       }
     })
     .catch(() => {
-      onFail();
+      onError();
     });
 };
 
