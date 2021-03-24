@@ -1,48 +1,46 @@
-import { mapForm } from './form.js';
-
-const houseTypeFilter = mapForm.querySelector('#housing-type');
-const priceFilter = mapForm.querySelector('#housing-type');
-const roomNumberFilter = mapForm.querySelector('#housing-rooms');
-const guestNumberFilter = mapForm.querySelector('#housing-guests');
+const houseTypeFilter = document.querySelector('#housing-type');
+const priceFilter = document.querySelector('#housing-price');
+const roomNumberFilter = document.querySelector('#housing-rooms');
+const guestNumberFilter = document.querySelector('#housing-guests');
 
 const filterByHouseType = (advertisement) => {
   return houseTypeFilter.value === 'any' || houseTypeFilter.value === advertisement.offer.type;
-}
+};
 
 const filterByPrice = (advertisement) => {
-  if(priceFilter.value === 'low') {
-    return advertisement.offer.price < 10000;
-  } else if(priceFilter.value === 'middle') {
-    return (advertisement.offer.price >= 10000) && (advertisement.offer.price <= 50000)
-  } else if(priceFilter.value === 'high') {
-    return advertisement.offer.price > 50000;
+  switch(priceFilter.value) {
+    case 'low':
+      return advertisement.offer.price < 10000;
+    case 'middle':
+      return (advertisement.offer.price >= 10000) && (advertisement.offer.price <= 50000);
+    case 'high':
+      return advertisement.offer.price > 50000;
+    default:
+      return true;
   }
-  return true;
-}
+};
 
 const filterByRoomNumber = (advertisement) => {
   return roomNumberFilter.value === 'any' || +roomNumberFilter.value === advertisement.offer.rooms;
-}
+};
 
 const filterByGuestNumber = (advertisement) => {
   return guestNumberFilter.value === 'any' || +guestNumberFilter.value === advertisement.offer.guests
-}
+};
 
-const groupFilters = (advertisement) => {
-  return filterByHouseType(advertisement) &&
-         filterByPrice(advertisement) &&
-         filterByRoomNumber(advertisement) &&
-         filterByGuestNumber(advertisement);
-}
+const filterByFeatures = (advertisement) => {
+  const features = document.querySelectorAll('input[type="checkbox"]:checked');
+  return Array.from(features).map(feature => feature.value).every(feature => advertisement.offer.features.includes(feature));
+};
 
 const filterAdvertisements = (advertisements) => {
-  return advertisements.filter(advertisement => groupFilters(advertisement));
-}
+  return advertisements.filter(advertisement => {
+    return filterByHouseType(advertisement) &&
+           filterByPrice(advertisement) &&
+           filterByRoomNumber(advertisement) &&
+           filterByGuestNumber(advertisement)  &&
+           filterByFeatures(advertisement);
+  });
+};
 
-const setMapFormChange = (cb) => {
-  mapForm.addEventListener('change', () => {
-    cb();
-  })
-}
-
-export { filterAdvertisements, setMapFormChange };
+export { filterAdvertisements };
