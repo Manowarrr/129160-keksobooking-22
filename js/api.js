@@ -34,4 +34,15 @@ const sendData = (onSuccess, onError, body) => {
     });
 };
 
-export { getData, sendData };
+const debounce = (cb, delay) => {
+  let interval;
+  return (...args) => {
+    clearTimeout(interval);
+    interval = setTimeout(() => {
+      interval = null;
+      cb(...args);
+    }, delay);
+  };
+};
+
+export { getData, sendData, debounce };

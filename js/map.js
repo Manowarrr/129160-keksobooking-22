@@ -1,11 +1,33 @@
-import { setAddressInput, toggleFormState } from './form.js';
-import { filterAdvertisements, setMapFormChange } from './filter.js';
+import { setAddressInput, activateForm, filterForm, advertisementForm, setFilterFormChange, setAdvertisementFormChange } from './form.js';
+import { filterAdvertisements } from './filter.js';
 import { createAdvertisementCard } from './create-adv-card.js';
-import { getData } from './api.js';
-import { createErrorGetDataMessage } from './create-message.js';
+import { getData, debounce } from './api.js';
+import { errorMessage } from './modal.js';
 
+const DEFAULT_LOCATION = {
+  lat: 35.6895,
+  lng: 139.69171,
+};
 /* global L:readonly */
-const createAdvertisementPins = (map, pinsLayer, advertisements) => {
+const map = L.map('map-canvas');
+
+const mainPinIcon = L.icon({
+  iconUrl: 'img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
+});
+
+const mainPinMarker = L.marker(
+  DEFAULT_LOCATION,
+  {
+    draggable: true,
+    icon: mainPinIcon,
+  },
+);
+
+const pinsLayer = L.layerGroup()
+
+const createAdvertisementPins = (advertisements) => {
   pinsLayer.clearLayers();
 
   filterAdvertisements(advertisements).forEach(adv => {
@@ -34,9 +56,6 @@ const createAdvertisementPins = (map, pinsLayer, advertisements) => {
 };
 
 const initializeMap = () => {
-
-  const map = L.map('map-canvas');
-
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -44,49 +63,41 @@ const initializeMap = () => {
     },
   ).addTo(map);
 
-  const mainPinIcon = L.icon({
-    iconUrl: 'img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  });
-
-  const mainPinMarker = L.marker(
-    {
-      lat: 35.6895,
-      lng: 139.69171,
-    },
-    {
-      draggable: true,
-      icon: mainPinIcon,
-    },
-  );
   mainPinMarker.addTo(map);
 
-  setAddressInput(35.6895, 139.69171);
+  setAddressInput(DEFAULT_LOCATION);
 
   mainPinMarker.on('moveend', (evt) => {
     const newAddress = evt.target.getLatLng();
-    setAddressInput(newAddress.lat, newAddress.lng);
+    setAddressInput(
+      {
+        lat: newAddress.lat,
+        lng: newAddress.lng,
+      },
+    );
   });
 
-  const pinsLayer = L.layerGroup()
   pinsLayer.addTo(map);
 
   map.on('load', () => {
-    toggleFormState('remove', false);
+    activateForm(advertisementForm);
     getData(
       (advertisements) => {
-        createAdvertisementPins(map, pinsLayer, advertisements);
-        setMapFormChange(() => createAdvertisementPins(map, pinsLayer, advertisements));
+        createAdvertisementPins(advertisements);
+        setFilterFormChange(debounce(() => createAdvertisementPins(advertisements), 500));
+        activateForm(filterForm);
+        setAdvertisementFormChange(advertisements);
       },
       (err) => {
-        createErrorGetDataMessage(err);
+        errorMessage(err);
       });
   })
-    .setView({
-      lat: 35.6895,
-      lng: 139.69171,
-    }, 10);
+    .setView(DEFAULT_LOCATION, 10);
 };
 
-export { initializeMap };
+const setMainMarkerLocationToDefault = () => {
+  mainPinMarker.setLatLng(new L.LatLng(DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng));
+  setAddressInput(DEFAULT_LOCATION);
+};
+
+export { initializeMap, setMainMarkerLocationToDefault, createAdvertisementPins };
