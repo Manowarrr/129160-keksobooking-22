@@ -20,14 +20,14 @@ const roomCapasitySelect = document.querySelector('#capacity');
 const activateForm = (form) => {
   form.classList.remove('ad-form--disabled');
 
-  if(filterForm.isEqualNode(form)) {
+  if ( filterForm.isEqualNode(form) ) {
     filterFormInputs.forEach(element => {
       element.disabled = false;
     });
     filterFormFeatures.disabled = false;
   }
 
-  if(advertisementForm.isEqualNode(form)) {
+  if ( advertisementForm.isEqualNode(form) ) {
     advertisementFormInputs.forEach(element => {
       element.disabled = false;
     });
@@ -37,14 +37,15 @@ const activateForm = (form) => {
 
 const deactivateForm = (form) => {
   form.classList.add('ad-form--disabled');
-  if(filterForm.isEqualNode(form)) {
+
+  if ( filterForm.isEqualNode(form) ) {
     filterFormInputs.forEach(element => {
       element.disabled = true;
     });
     filterFormFeatures.disabled = true;
   }
 
-  if(advertisementForm.isEqualNode(form)) {
+  if ( advertisementForm.isEqualNode(form) ) {
     advertisementFormInputs.forEach(element => {
       element.disabled = true;
     });
@@ -53,18 +54,21 @@ const deactivateForm = (form) => {
 }
 
 const addSelectEventListener = (select) => {
+
   select.addEventListener('change', () => {
     const roomIndex = roomNumberSelect.options.selectedIndex;
     const capacityIndex = roomCapasitySelect.options.selectedIndex;
-    if(roomIndex < capacityIndex) {
+
+    if (roomIndex < capacityIndex) {
       select.setCustomValidity('Введенное количество комнат не соответствует количеству гостей!');
-    } else if((roomIndex == 3 || capacityIndex == 3) && roomIndex != capacityIndex) {
+    } else if ((roomIndex == 3 || capacityIndex == 3) && roomIndex != capacityIndex) {
       select.setCustomValidity('Введенное количество комнат не соответствует количеству гостей!');
     } else {
       select.setCustomValidity('');
     }
     select.reportValidity();
   });
+
 }
 
 const setAddressInput = (coordinates) => {
@@ -72,6 +76,7 @@ const setAddressInput = (coordinates) => {
 };
 
 const setUserFormSubmit = () => {
+
   advertisementForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -84,6 +89,7 @@ const setUserFormSubmit = () => {
       new FormData(evt.target),
     );
   });
+
 };
 
 const setAdvertisementFormChange = (advertisements) => {

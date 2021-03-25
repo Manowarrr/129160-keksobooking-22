@@ -15,8 +15,7 @@ const getData = (onSuccess, onError) => {
 };
 
 const sendData = (onSuccess, onError, body) => {
-  fetch(
-    'https://22.javascript.pages.academy/keksobooking ',
+  fetch('https://22.javascript.pages.academy/keksobooking ',
     {
       method: 'POST',
       body,
@@ -34,15 +33,4 @@ const sendData = (onSuccess, onError, body) => {
     });
 };
 
-const debounce = (cb, delay) => {
-  let interval;
-  return (...args) => {
-    clearTimeout(interval);
-    interval = setTimeout(() => {
-      interval = null;
-      cb(...args);
-    }, delay);
-  };
-};
-
-export { getData, sendData, debounce };
+export { getData, sendData };
