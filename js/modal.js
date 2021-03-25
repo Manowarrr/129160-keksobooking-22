@@ -1,15 +1,13 @@
+import { isEscPressed } from './util.js';
+
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageButton = errorMessageTemplate.querySelector('.error__button');
 const errorMessageText = errorMessageTemplate.querySelector('.error__message');
 
-const isEscPressed = (evt) => {
-  return evt.key === 'Escape' || evt.key === 'Esc' || evt.code === 27;
-};
-
 const errorMessage = (text) => {
 
-  if(text) {
+  if (text) {
     errorMessageText.textContent = text;
   }
 
@@ -18,6 +16,7 @@ const errorMessage = (text) => {
   const escPressHandler = (evt) => {
     if (isEscPressed(evt)) {
       evt.preventDefault();
+
       closeErrorMessage();
     }
   };
@@ -30,6 +29,7 @@ const errorMessage = (text) => {
 
   const closeErrorMessage = () => {
     errorMessageTemplate.remove();
+
     document.removeEventListener('keydown', escPressHandler);
   };
 
@@ -45,6 +45,7 @@ const successMessage = () => {
   const escPressHandler = (evt) => {
     if (isEscPressed(evt)) {
       evt.preventDefault();
+
       closeSuccessMessage();
     }
   };
@@ -57,6 +58,7 @@ const successMessage = () => {
 
   const closeSuccessMessage = () => {
     successMessageTemplate.remove();
+
     document.removeEventListener('keydown', escPressHandler);
   };
 };

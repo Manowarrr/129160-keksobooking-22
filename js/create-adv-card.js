@@ -18,11 +18,11 @@ const PLACESTYPES = {
 };
 
 const makeSimilarElementsFromArray = (arr, element) => {
-
   const listFragment = document.createDocumentFragment();
 
   arr.forEach(item => {
-    const elem = document.createElement(element)
+    const elem = document.createElement(element);
+
     if(element == 'li') {
       elem.classList.add('popup__feature', `popup__feature--${item}`);
     } else {
@@ -39,7 +39,6 @@ const makeSimilarElementsFromArray = (arr, element) => {
 };
 
 const createAdvertisementCard = (adv) => {
-
   const similarAdvertisementTemplate = document.querySelector('#card').content.querySelector('.popup');
   const advElement = similarAdvertisementTemplate.cloneNode(true);
 
@@ -54,14 +53,14 @@ const createAdvertisementCard = (adv) => {
   const featuresList = advElement.querySelector('.popup__features');
   featuresList.innerHTML = '';
   const features = adv.offer.features;
-  if(features.length !== 0) {
+  if (features.length !== 0) {
     featuresList.appendChild(makeSimilarElementsFromArray(features, 'li'));
   } else {
     featuresList.classList.add('hidden');
   }
 
   const description = advElement.querySelector('.popup__description');
-  if(adv.offer.description) {
+  if (adv.offer.description) {
     description.textContent = adv.offer.description;
   } else {
     description.classList.add('hidden');
@@ -70,7 +69,7 @@ const createAdvertisementCard = (adv) => {
   const photoList = advElement.querySelector('.popup__photos');
   photoList.innerHTML = '';
   const photos = adv.offer.photos;
-  if(photos.length !== 0) {
+  if (photos.length !== 0) {
     photoList.appendChild(makeSimilarElementsFromArray(photos, 'img'));
   } else {
     photoList.classList.add('hidden');

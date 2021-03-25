@@ -1,13 +1,15 @@
 import { setAddressInput, activateForm, filterForm, advertisementForm, setFilterFormChange, setAdvertisementFormChange } from './form.js';
 import { filterAdvertisements } from './filter.js';
 import { createAdvertisementCard } from './create-adv-card.js';
-import { getData, debounce } from './api.js';
+import { getData } from './api.js';
 import { errorMessage } from './modal.js';
+import { debounce } from './util.js';
 
 const DEFAULT_LOCATION = {
   lat: 35.6895,
   lng: 139.69171,
 };
+
 /* global L:readonly */
 const map = L.map('map-canvas');
 
@@ -69,6 +71,7 @@ const initializeMap = () => {
 
   mainPinMarker.on('moveend', (evt) => {
     const newAddress = evt.target.getLatLng();
+
     setAddressInput(
       {
         lat: newAddress.lat,
@@ -80,7 +83,9 @@ const initializeMap = () => {
   pinsLayer.addTo(map);
 
   map.on('load', () => {
+
     activateForm(advertisementForm);
+
     getData(
       (advertisements) => {
         createAdvertisementPins(advertisements);
@@ -97,6 +102,7 @@ const initializeMap = () => {
 
 const setMainMarkerLocationToDefault = () => {
   mainPinMarker.setLatLng(new L.LatLng(DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng));
+
   setAddressInput(DEFAULT_LOCATION);
 };
 
