@@ -61,7 +61,7 @@ const addSelectEventListener = (select) => {
 
     if (roomIndex < capacityIndex) {
       select.setCustomValidity('Введенное количество комнат не соответствует количеству гостей!');
-    } else if ((roomIndex == 3 || capacityIndex == 3) && roomIndex != capacityIndex) {
+    } else if ((roomIndex === 3 || capacityIndex === 3) && roomIndex !== capacityIndex) {
       select.setCustomValidity('Введенное количество комнат не соответствует количеству гостей!');
     } else {
       select.setCustomValidity('');

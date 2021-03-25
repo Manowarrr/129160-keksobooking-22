@@ -23,7 +23,7 @@ const makeSimilarElementsFromArray = (arr, element) => {
   arr.forEach(item => {
     const elem = document.createElement(element);
 
-    if(element == 'li') {
+    if(element === 'li') {
       elem.classList.add('popup__feature', `popup__feature--${item}`);
     } else {
       elem.width = 45;
