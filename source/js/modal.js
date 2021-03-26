@@ -5,7 +5,7 @@ const successMessageTemplate = document.querySelector('#success').content.queryS
 const errorMessageButton = errorMessageTemplate.querySelector('.error__button');
 const errorMessageText = errorMessageTemplate.querySelector('.error__message');
 
-const errorMessage = (text) => {
+const showErrorMessage = (text) => {
 
   if (text) {
     errorMessageText.textContent = text;
@@ -38,7 +38,7 @@ const errorMessage = (text) => {
   });
 };
 
-const successMessage = () => {
+const showSuccessMessage = () => {
 
   document.querySelector('main').appendChild(successMessageTemplate);
 
@@ -63,4 +63,4 @@ const successMessage = () => {
   };
 };
 
-export { errorMessage, successMessage};
+export { showErrorMessage, showSuccessMessage};

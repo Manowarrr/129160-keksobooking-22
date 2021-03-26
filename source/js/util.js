@@ -2,7 +2,7 @@ const isEscPressed = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc' || evt.code === 27;
 };
 
-const debounce = (cb, delay) => {
+const createDebounce = (cb, delay) => {
   let interval;
 
   return (...args) => {
@@ -16,4 +16,4 @@ const debounce = (cb, delay) => {
   };
 };
 
-export { isEscPressed, debounce};
+export { isEscPressed, createDebounce};

@@ -2,8 +2,9 @@ import { setAddressInput, activateForm, filterForm, advertisementForm, setFilter
 import { filterAdvertisements } from './filter.js';
 import { createAdvertisementCard } from './create-adv-card.js';
 import { getData } from './api.js';
-import { errorMessage } from './modal.js';
-import { debounce } from './util.js';
+import { showErrorMessage } from './modal.js';
+import { createDebounce } from './util.js';
+import { showPhotoPreview } from './photo.js';
 
 const DEFAULT_LOCATION = {
   lat: 35.6895,
@@ -85,16 +86,18 @@ const initializeMap = () => {
   map.on('load', () => {
 
     activateForm(advertisementForm);
+    showPhotoPreview('user');
+    showPhotoPreview('place');
 
     getData(
       (advertisements) => {
         createAdvertisementPins(advertisements);
-        setFilterFormChange(debounce(() => createAdvertisementPins(advertisements), 500));
+        setFilterFormChange(createDebounce(() => createAdvertisementPins(advertisements), 500));
         activateForm(filterForm);
         setAdvertisementFormChange(advertisements);
       },
       (err) => {
-        errorMessage(err);
+        showErrorMessage(err);
       });
   })
     .setView(DEFAULT_LOCATION, 10);

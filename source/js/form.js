@@ -1,7 +1,7 @@
 import { PLACESTYPES } from './create-adv-card.js';
 import { sendData } from './api.js';
 import { setMainMarkerLocationToDefault, createAdvertisementPins } from './map.js';
-import { errorMessage, successMessage } from './modal.js';
+import { showErrorMessage, showSuccessMessage } from './modal.js';
 
 const typeSelect = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
@@ -15,7 +15,7 @@ const filterForm = document.querySelector('.map__filters');
 const filterFormInputs = filterForm.querySelectorAll('.map__filter');
 const filterFormFeatures = filterForm.querySelector('.map__features');
 const roomNumberSelect = document.querySelector('#room_number');
-const roomCapasitySelect = document.querySelector('#capacity');
+const guestNumberSelect = document.querySelector('#capacity');
 
 const activateForm = (form) => {
   form.classList.remove('ad-form--disabled');
@@ -57,11 +57,11 @@ const addSelectEventListener = (select) => {
 
   select.addEventListener('change', () => {
     const roomIndex = roomNumberSelect.options.selectedIndex;
-    const capacityIndex = roomCapasitySelect.options.selectedIndex;
+    const guestIndex = guestNumberSelect.options.selectedIndex;
 
-    if (roomIndex < capacityIndex) {
+    if (roomIndex < guestIndex) {
       select.setCustomValidity('Введенное количество комнат не соответствует количеству гостей!');
-    } else if ((roomIndex === 3 || capacityIndex === 3) && roomIndex !== capacityIndex) {
+    } else if ((roomIndex === 3 || guestIndex === 3) && roomIndex !== guestIndex) {
       select.setCustomValidity('Введенное количество комнат не соответствует количеству гостей!');
     } else {
       select.setCustomValidity('');
@@ -82,10 +82,10 @@ const setUserFormSubmit = () => {
 
     sendData(
       () => {
-        successMessage();
+        showSuccessMessage();
         advertisementForm.reset();
       },
-      () => errorMessage(),
+      () => showErrorMessage(),
       new FormData(evt.target),
     );
   });
@@ -114,7 +114,7 @@ const setAdvertisementFormChange = (advertisements) => {
   });
 
   addSelectEventListener(roomNumberSelect);
-  addSelectEventListener(roomCapasitySelect);
+  addSelectEventListener(guestNumberSelect);
 
   advertisementForm.addEventListener('reset', () => setTimeout(resetState) );
 
